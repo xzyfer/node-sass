@@ -96,8 +96,8 @@ function exists() {
 
 function fetch(name) {
   var url = [
-    'https://raw.githubusercontent.com/sass/node-sass-binaries/v',
-    require('../package.json').version, '/', name,
+    'https://s3.amazonaws.com/node-sass-binaries/',
+    name,
     '/binding.node'
   ].join('');
   var dir = path.join(__dirname, '..', 'vendor', name);

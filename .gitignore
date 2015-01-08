@@ -5,3 +5,63 @@ build
 lib-cov
 node_modules
 vendor
+
+# Miscellaneous stuff
+
+/src/libsass/*.gem
+/src/libsass/*.gcno
+/src/libsass/.svn/*
+/src/libsass/.cproject
+/src/libsass/.project
+/src/libsass/.settings/
+
+# Configuration stuff
+
+/src/libsass/Makefile.in
+/src/libsass/aclocal.m4
+/src/libsass/autom4te.cache/
+/src/libsass/config.guess
+/src/libsass/config.h
+/src/libsass/config.h.in
+/src/libsass/config.log
+/src/libsass/config.status
+/src/libsass/config.sub
+/src/libsass/configure
+/src/libsass/depcomp
+/src/libsass/install-sh
+/src/libsass/libtool
+/src/libsass/ltmain.sh
+/src/libsass/m4/libtool.m4
+/src/libsass/m4/ltoptions.m4
+/src/libsass/m4/ltsugar.m4
+/src/libsass/m4/ltversion.m4
+/src/libsass/m4/lt~obsolete.m4
+/src/libsass/missing
+/src/libsass/stamp-h1
+/src/libsass/src/Makefile
+
+# Build stuff
+
+/src/libsass/*.o
+/src/libsass/*.lo
+/src/libsass/*.so
+/src/libsass/*.dll
+/src/libsass/*.a
+/src/libsass/a.out
+/src/libsass/libsass.js
+
+/src/libsass/bin/*
+/src/libsass/.deps/
+/src/libsass/.libs/
+/src/libsass/win/bin
+
+# Final results
+
+/src/libsass/sassc++
+/src/libsass/libsass.la
+/src/libsass/support/libsass.pc
+
+# Cloned testing dirs
+/src/libsass/sassc/
+/src/libsass/sass-spec/
+

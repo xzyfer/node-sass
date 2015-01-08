@@ -1,5 +1,6 @@
 #include <nan.h>
 #include <vector>
+#include <iostream>
 #include "sass_context_wrapper.h"
 
 char* CreateString(Local<Value> value) {
@@ -52,6 +53,7 @@ void prepare_import_results(Local<Value> returned_value, sass_context_wrapper* c
 
 void dispatched_async_uv_callback(uv_async_t *req) {
   NanScope();
+  std::cout<<"sup 5"<<std::endl;
   sass_context_wrapper* ctx_w = static_cast<sass_context_wrapper*>(req->data);
 
   TryCatch try_catch;
@@ -100,9 +102,11 @@ struct Sass_Import** sass_importer(const char* file, const char* prev, void* coo
 
     Local<Object> returned_value = Local<Object>::Cast(NanNew<Value>(ctx_w->importer_callback->Call(2, argv)));
 
+    std::cout<<"sup 1"<<std::endl;
     prepare_import_results(returned_value->Get(NanNew("objectLiteral")), ctx_w);
   }
 
+  std::cout<<"sup 2"<<std::endl;
   return ctx_w->imports;
 }
 
@@ -285,6 +289,7 @@ NAN_METHOD(RenderSync) {
   int result = GetResult(ctx_w, ctx);
   Local<String> error;
 
+  std::cout<<"sup 3"<<std::endl;
   if (result != 0) {
     error = NanNew<String>(sass_context_get_error_json(ctx));
   }
@@ -345,7 +350,7 @@ NAN_METHOD(RenderFileSync) {
 
 NAN_METHOD(ImportedCallback) {
   NanScope();
-
+  std::cout<<"sup 6"<<std::endl;
   TryCatch try_catch;
 
   Local<Object> options = args[0]->ToObject();
