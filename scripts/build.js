@@ -3,6 +3,7 @@
  */
 
 var eol = require('os').EOL,
+    pkg = require('../package.json'),
     fs = require('fs'),
     mkdir = require('mkdirp'),
     path = require('path'),
@@ -52,26 +53,61 @@ function afterBuild(options) {
  * @api private
  */
 
+function installGitDependencies(cb) {
+  function initSubmodules(cb) {
+    var errorMsg = '';
+    var git = spawn('git', ['clone', 'git@github.com:sass/libsass.git', './src/libsass']);
+    git.stderr.on('data', function(data) {
+      errorMsg += data.toString();
+    });
+    git.on('close', function(code) {
+      var error;
+      if (code !== 0) {
+        error = { message: errorMsg + 'Unable to checkout the libSass submodule' };
+      }
+      cb(error);
+    });
+  }
+
+  if (fs.access) { // node 0.12+, iojs 1.0.0+
+    fs.access('./src/libsass', fs.R_OK, function(err) {
+      err && err.code === 'ENOENT' ? initSubmodules(cb) : cb();
+    });
+  } else { // node < 0.12
+    fs.exists(path, function(exists) {
+      exists ? cb() : initSubmodules(cb);
+    });
+  }
+}
+
 function build(options) {
-  var args = [path.join('node_modules', 'pangyp', 'bin', 'node-gyp'), 'rebuild'].concat(
-    ['libsass_ext', 'libsass_cflags', 'libsass_ldflags', 'libsass_library'].map(function(subject) {
-      return ['--', subject, '=', process.env[subject.toUpperCase()] || ''].join('');
-    })).concat(options.args);
-
-  console.log(['Building:', process.sass.runtime.execPath].concat(args).join(' '));
-
-  var proc = spawn(process.sass.runtime.execPath, args, {
-    stdio: [0, 1, 2]
-  });
-
-  proc.on('exit', function(errorCode) {
-    if (!errorCode) {
-      afterBuild(options);
-
-      return;
+  installGitDependencies(function(err) {
+    if (err) {
+      console.error(err.message);
+      process.exit(1);
     }
 
-    console.error(errorCode === 127 ? 'node-gyp not found!' : 'Build failed');
+    var args = [path.join('node_modules', 'pangyp', 'bin', 'node-gyp'), 'rebuild'].concat(
+      ['libsass_ext', 'libsass_cflags', 'libsass_ldflags', 'libsass_library'].map(function(subject) {
+        return ['--', subject, '=', process.env[subject.toUpperCase()] || ''].join('');
+      })).concat(options.args);
+
+    console.log(['Building:', process.sass.runtime.execPath].concat(args).join(' '));
+
+    var proc = spawn(process.sass.runtime.execPath, args, {
+      stdio: [0, 1, 2]
+    });
+
+    proc.on('exit', function(errorCode) {
+      if (!errorCode) {
+        afterBuild(options);
+
+        return;
+      }
+
+      console.error(errorCode === 127 ? 'node-gyp not found!' : 'Build failed');
+      process.exit(1);
+    });
   });
 }
 
