@@ -75,7 +75,7 @@ function initSubmodules(cb) {
   console.log('Detected a git install');
   console.log('Cloning libSass into src/libsass');
 
-  var clone = spawn('git', ['clone', 'git@github.com:sass/libsass.git', './src/libsass']);
+  var clone = spawn('git', ['clone', 'git@github.com:mgreter/libsass.git', './src/libsass']);
   manageProcess(clone, function(err) {
     if (err) {
       cb(err);

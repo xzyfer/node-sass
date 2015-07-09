@@ -13,8 +13,6 @@
         'libsass/cencode.c',
         'libsass/constants.cpp',
         'libsass/context.cpp',
-        'libsass/contextualize.cpp',
-        'libsass/contextualize_eval.cpp',
         'libsass/cssize.cpp',
         'libsass/emitter.cpp',
         'libsass/error_handling.cpp',
