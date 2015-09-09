@@ -19,6 +19,8 @@
 
   environment:
     SKIP_SASS_BINARY_DOWNLOAD_FOR_CI: true
+    GITHUB_API_KEY:
+      secure: tt+p58W9Q49faww/o0CODJI8e++YEX5THVlpXlRIigO4xHjE8NKigi0oxr1b2PJE
     matrix:
       - nodejs_version: 0.10
       - nodejs_version: 0.12
@@ -35,6 +37,15 @@
     - npm install --msvs_version=2013
 
   test_script: npm test
+
+  deploy:
+    - provider: GitHub
+      artifact: /vendor\\.*\\.*\.node/           # upload all NuGet packages to release assets
+      auth_token:
+        secure: tt+p58W9Q49faww/o0CODJI8e++YEX5THVlpXlRIigO4xHjE8NKigi0oxr1b2PJE
+      on:
+        branch: release                # release from master branch only
+#       appveyor_repo_tag: true       # deploy on tag push only
 
 -
   configuration: testing
