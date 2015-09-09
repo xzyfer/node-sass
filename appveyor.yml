@@ -38,7 +38,7 @@
 
   test_script: npm test
 
-  build_success:
+  before_deploy:
     # Save artifact with full qualified names of binding.node
     # (which we use in node-sass-binaries repo)
     - ps: Get-ChildItem .\vendor\**\*.node | % { Push-AppveyorArtifact $_.FullName -FileName (($_.FullName.Split('\\') | Select-Object -Last 2) -join '_') }
