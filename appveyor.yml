@@ -38,14 +38,24 @@
 
   test_script: npm test
 
+  on_success:
+    # Save artifact with full qualified names of binding.node
+    # (which we use in node-sass-binaries repo)
+    - ps: Get-ChildItem .\vendor\**\*.node | % `
+    {
+      Push-AppveyorArtifact $_.FullName -FileName
+     (($_.FullName.Split('\\') | Select-Object -Last 2) -join '_')
+    }`
+
+
   deploy:
     - provider: GitHub
-      artifact: /vendor\\.*\\.*\.node/           # upload all NuGet packages to release assets
+      artifact: /.*binding\.node/           # upload all NuGet packages to release assets
       auth_token:
         secure: tt+p58W9Q49faww/o0CODJI8e++YEX5THVlpXlRIigO4xHjE8NKigi0oxr1b2PJE
       on:
-        branch: release                # release from master branch only
-#       appveyor_repo_tag: true       # deploy on tag push only
+        branch: release               # release from master branch only
+        appveyor_repo_tag: true       # deploy on tag push only
 
 -
   configuration: testing
