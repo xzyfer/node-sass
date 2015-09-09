@@ -86,4 +86,3 @@
     - npm install --msvs_version=2013
 
   test_script: npm test
-
