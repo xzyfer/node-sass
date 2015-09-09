@@ -46,7 +46,7 @@
 
   deploy:
     - provider: GitHub
-      release: AppVeyor-$(APPVEYOR_REPO_TAG_NAME)
+      description: 'An automated build'
       artifact: /.*binding\.node/           # upload all NuGet packages to release assets
       auth_token:
         secure: tt+p58W9Q49faww/o0CODJI8e++YEX5THVlpXlRIigO4xHjE8NKigi0oxr1b2PJE
